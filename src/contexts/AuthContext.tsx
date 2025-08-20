@@ -17,8 +17,6 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined)
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
-
   // Load from localStorage on mount
   useEffect(() => {
     const storedUser = localStorage.getItem('user')
@@ -27,7 +25,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(JSON.parse(storedUser))
       setIsAuthenticated(true)
     }
-    setLoading(false)
   }, [])
 
   const login = (userData: User) => {
