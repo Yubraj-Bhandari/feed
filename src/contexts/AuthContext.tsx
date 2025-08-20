@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactNode, useEffect } from "react"
+import { createContext, useContext, useState, type ReactNode } from "react"
 
 interface User {
   email: string;
@@ -17,18 +17,18 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined)
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
+  // const [loading, setLoading] = useState(true)
 
   // Load from localStorage on mount
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user')
-    const storedAuth = localStorage.getItem('isAuthenticated')
-    if (storedUser && storedAuth === 'true') {
-      setUser(JSON.parse(storedUser))
-      setIsAuthenticated(true)
-    }
-    setLoading(false)
-  }, [])
+  // useEffect(() => {
+  //   const storedUser = localStorage.getItem('user')
+  //   const storedAuth = localStorage.getItem('isAuthenticated')
+  //   if (storedUser && storedAuth === 'true') {
+  //     setUser(JSON.parse(storedUser))
+  //     setIsAuthenticated(true)
+  //   }
+  //   setLoading(false)
+  // }, [])
 
   const login = (userData: User) => {
     setIsAuthenticated(true)
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem('isAuthenticated')
   }
 
-  if (loading) return null
+  // if (loading) return null
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout, user }}>
