@@ -1,4 +1,3 @@
-
 import {
   Sidebar,
   SidebarContent,
@@ -11,7 +10,8 @@ import {
   SidebarMenuItem,
   SidebarSeparator,
 } from "@/components/ui/sidebar"
-import { Home, PlusCircle, Rss,  } from "lucide-react"
+import { Home, PlusCircle, Rss } from "lucide-react"
+import { Link } from "react-router-dom"  // Add this import
 
 // Menu items 
 const navigationItems = [
@@ -28,21 +28,6 @@ const navigationItems = [
     description: "Create new content",
   },
 ]
-
-// const quickActions = [
-//   {
-//     title: "Profile",
-//     url: "/profile",
-//     icon: User,
-//     description: "Manage your profile",
-//   },
-//   {
-//     title: "Settings",
-//     url: "/settings",
-//     icon: Settings,
-//     description: "App preferences",
-//   },
-// ]
 
 export function AppSidebar() {
   return (
@@ -75,7 +60,7 @@ export function AppSidebar() {
                     className="group relative overflow-hidden rounded-lg transition-all duration-200 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 dark:hover:from-blue-950/30 dark:hover:to-indigo-950/30 hover:shadow-sm"
                     tooltip={item.description}
                   >
-                    <a href={item.url} className="flex items-center gap-3 px-3 py-2.5">
+                    <Link to={item.url} className="flex items-center gap-3 px-3 py-2.5">
                       <div className="flex h-8 w-8 items-center justify-center rounded-md bg-background group-hover:bg-white group-hover:shadow-sm transition-all duration-200">
                         <item.icon className="h-4 w-4 text-muted-foreground group-hover:text-blue-600 transition-colors duration-200" />
                       </div>
@@ -87,9 +72,9 @@ export function AppSidebar() {
                           {item.description}
                         </span>
                       </div>
-                          {/* Hover */}
+                      {/* Hover */}
                       <div className="absolute left-0 top-1/2 h-0 w-1 bg-gradient-to-b from-blue-500 to-indigo-600 rounded-r-full transition-all duration-200 group-hover:h-8 transform -translate-y-1/2" />
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -98,11 +83,7 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <SidebarSeparator className="my-4 bg-gradient-to-r from-transparent via-border to-transparent" />
-
-     
       </SidebarContent>
-
-
     </Sidebar>
   )
 }
