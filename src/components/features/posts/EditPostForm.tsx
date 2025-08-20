@@ -12,7 +12,7 @@ import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../ui/form';
 import { toast } from 'sonner';
-import LoadingSpinner from './LoadingSpinner';
+// import LoadingSpinner from './LoadingSpinner';
 
 const editPostSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -139,7 +139,7 @@ const EditPostForm: React.FC<EditPostFormProps> = ({ post, onPostEdited }) => {
           >
             {editPostMutation.isPending ? (
               <span className="flex items-center">
-                <LoadingSpinner size="sm" className="mr-2" />
+                {/* <LoadingSpinner size="sm" className="mr-2" /> */}
                 Updating...
               </span>
             ) : 'Update Post'}

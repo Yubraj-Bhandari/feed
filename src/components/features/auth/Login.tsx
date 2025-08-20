@@ -9,7 +9,7 @@ import { Form, FormField, FormLabel, FormMessage } from "../../ui/form"
 import { useForm } from "react-hook-form"
 import { useState } from "react"
 import { Eye, EyeOff } from "lucide-react"
-import LoadingSpinner from "../../features/posts/LoadingSpinner";
+// import LoadingSpinner from "../../features/posts/LoadingSpinner";
 
 const schema = z.object({
   email: z.email("Invalid email address").min(1, "Email is required"),
@@ -35,7 +35,7 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-blue-300 via-blue-500 to-blue-900 flex items-center justify-center p-4">
+    <div className="min-h-screen w-full  bg-gradient-to-b from-blue-400 to-indigo-500 flex items-center justify-center p-4">
       <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg">
         <Form {...form}>
           <form
@@ -107,12 +107,12 @@ export default function Login() {
             <Button
               type="submit"
               disabled={form.formState.isSubmitting}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 text-base font-medium transition-colors duration-200"
+              className="flex items-center justify-center w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 text-base font-medium transition-colors duration-200"
             >
               {form.formState.isSubmitting ? (
                 <span className="flex items-center justify-center">
-                  <LoadingSpinner size="sm" className="mr-2" />
-                  Signing in...
+                  {/* <LoadingSpinner size="sm" className="mr-2" /> */}
+                  {/* Signing in... */}
                 </span>
               ) : (
                 "Sign In"
@@ -123,7 +123,7 @@ export default function Login() {
               <p className="text-sm text-gray-600">
                 Don't have an account?{" "}
                 <Link 
-                  to="/signup" 
+                  to="" 
                   className="text-blue-600 hover:text-blue-700 font-medium hover:underline"
                 >
                   Sign up

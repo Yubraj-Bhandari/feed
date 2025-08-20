@@ -1,4 +1,4 @@
- @import "tailwindcss";
+@import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
@@ -117,15 +117,16 @@
     margin: 0;
     padding: 0;
   }
+  
   html,
   body {
     margin: 0;
     padding: 0;
-    /* REMOVED: Fixed background gradient that was causing issues */
     background-color: transparent;
   }
+  
   body {
-    @apply text-foreground font-sans;
+    @apply text-foreground font-sans bg-background;
   }
 
   h1 {
@@ -138,15 +139,6 @@
     @apply text-2xl font-semibold;
     margin-top: 0;
     margin-bottom: 0;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
   }
 }
 
@@ -174,7 +166,7 @@
   }
 }
 
-/* Additional styles to prevent gaps */
+/* Enhanced button and layout fixes */
 @layer utilities {
   .no-gap {
     margin: 0;
@@ -182,8 +174,151 @@
   }
   
   /* Ensure sidebar trigger doesn't add unwanted spacing */
-  [data-sidebar="trigger"] + * {
-    margin-top: 0;
+  [data-sidebar="trigger"] {
+    width: auto !important;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  
+  /* Fix button display issues */
+  button {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  /* Enhanced button hover effects */
+  button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Custom button hover class */
+  .btn-hover {
+    @apply cursor-pointer transition-all duration-200 ease-in-out;
+  }
+  
+  .btn-hover:hover {
+    @apply shadow-lg transform -translate-y-0.5;
+  }
+  
+  .btn-hover:active {
+    @apply transform translate-y-0;
+  }
+  
+  /* Ensure button text is visible */
+  .btn-text-fix {
+    color: inherit;
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* Fix for elements taking full width */
+  .inline-element {
+    display: inline-flex !important;
+    width: auto !important;
+  }
+  
+  /* Logout Confirmation Dialog Styles */
+  .logout-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+  }
+  
+  .logout-dialog-content {
+    background: white;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 90%;
+    margin: 20px;
+    animation: dialogFadeIn 0.2s ease-out;
+  }
+  
+  .logout-dialog-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 12px 0;
+  }
+  
+  .logout-dialog-description {
+    color: #6b7280;
+    margin: 0 0 24px 0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  .logout-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+  
+  .logout-dialog-cancel {
+    padding: 8px 16px;
+    background: #f3f4f6;
+    color: #374151;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .logout-dialog-cancel:hover {
+    background: #e5e7eb;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  .logout-dialog-confirm {
+    padding: 8px 16px;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .logout-dialog-confirm:hover {
+    background: rgb(41, 41, 255);
+    transform: none;
+    box-shadow: none;
+  }
+  
+  @keyframes dialogFadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 }
 
@@ -202,4 +337,4 @@
 .card-header .post-id {
   font-size: 14px;
   color: #666;
-} 
+}

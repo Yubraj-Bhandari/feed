@@ -1,5 +1,6 @@
-import { Loader2 } from 'lucide-react'
+
 import { cn } from '../../../lib/utils'
+import { LoaderCircle } from 'lucide-react';
 
 interface LoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg'
@@ -20,7 +21,10 @@ export default function LoadingSpinner({
 
   return (
     <div className={cn('flex flex-col items-center justify-center p-8', className)}>
-      <Loader2 className={cn('animate-spin text-primary', sizeClasses[size])} />
+
+      {/* <Loader2 className={cn('animate-spin text-primary', sizeClasses[size])} /> */}
+      <LoaderCircle className={cn('animate-spin text-primary', sizeClasses[size])} />
+     
       {text && (
         <p className="mt-2 text-sm text-muted-foreground">{text}</p>
       )}

@@ -1,10 +1,12 @@
+
+
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import {AuthProvider} from "./contexts/AuthContext"
+import { AuthProvider } from "./contexts/AuthContext"
 import { BrowserRouter } from 'react-router-dom'
 
 // Configure React Query
@@ -13,7 +15,6 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 5 * 60 * 1000, // 5 minutes
       retry: (failureCount, error) => {
-        // Don't retry on 4xx errors, but retry on network errors
         if (error instanceof Error && error.message.includes('404')) {
           return false
         }
@@ -27,13 +28,16 @@ const queryClient = new QueryClient({
   },
 })
 
+// Set basename dynamically for local dev and production
+const basename = import.meta.env.DEV ? "/" : "/feed"
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <BrowserRouter>
-      <App />
-      </BrowserRouter>
+        <BrowserRouter basename={basename}>
+          <App />
+        </BrowserRouter>
       </AuthProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

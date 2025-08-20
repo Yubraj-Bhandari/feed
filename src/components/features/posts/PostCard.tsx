@@ -9,39 +9,21 @@ import {  User, Calendar } from 'lucide-react'
 import { useUser } from '../../../hooks/useUser'
 import type { Post } from '../../../schemas/post'
 import { truncateText } from '../../../lib/utils'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, } from 'react-router-dom'
 
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { api } from '../../../lib/api'
-import { toast } from 'sonner'
+// import { useMutation, useQueryClient } from '@tanstack/react-query'
+// import { api } from '../../../lib/api'
+// import { toast } from 'sonner'
 
 interface PostCardProps {
   post: Post
-  onViewComments?: (postId: number) => void
 }
 
-export default function PostCard({ post, onViewComments }: PostCardProps) {
+export default function PostCard({ post }: PostCardProps) {
   const { data: user, isLoading: userLoading } = useUser(post.userId)
-  const navigate = useNavigate()
-  const queryClient = useQueryClient()
+  // const navigate = useNavigate()
+  // const queryClient = useQueryClient()
 
-  const deleteMutation = useMutation({
-    mutationFn: async (postId: number) => {
-      await api.delete(`/posts/${postId}`)
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['posts'] })
-      toast.success('Post deleted successfully!', {
-        description: 'The post has been deleted from the feed.',
-      })
-      navigate('/')
-    },
-    onError: (error) => {
-      toast.error('Failed to delete post', {
-        description: `Error: ${error.message}. Please try again.`,
-      })
-    },
-  })
 
   return (
     <Card className="h-full flex flex-col hover:shadow-xl transition-all duration-200 hover:scale-[1.03] overflow-hidden bg-white border border-gray-200 rounded-xl">

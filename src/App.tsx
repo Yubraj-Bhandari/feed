@@ -12,7 +12,7 @@ function App() {
 
   useEffect(() => {
     if (hideSidebar) {
-      // Your logic here if needed
+      
     }
   }, [hideSidebar]);
 

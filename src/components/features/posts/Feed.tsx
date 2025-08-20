@@ -1,38 +1,39 @@
 
 
-import { useState, useCallback } from "react"
-import { useNavigate, Link } from "react-router-dom"
+
+import { useCallback, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { useAuth } from "../../../contexts/AuthContext"
-import { AlertCircle, RefreshCw, Rss, PlusCircle } from 'lucide-react'
+import { AlertCircle, RefreshCw, Rss } from 'lucide-react'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-
 import { Button } from '@/components/ui/button'
-import { toast } from 'sonner';
-
+// import { toast } from 'sonner';
 import PostCard from './PostCard'
 import PostSkeleton from './PostSkeleton'
 import LoadingSpinner from './LoadingSpinner'
 import { useInfinitePosts } from '../../../hooks/useInfinitePosts'
 import { useIntersectionObserver } from '../../../hooks/useIntersectionObserver'
-import { LogOut } from 'lucide-react'; // Import LogOut icon
+import { LogOut } from 'lucide-react'
 
 export default function Feed() {
-  const [selectedPostId,setSelectedPostId] = useState<number | null>(null)
-
-  const { logout, user } = useAuth() // Destructure user from useAuth
+  const { logout, user } = useAuth()
   const navigate = useNavigate()
+  
+  // State for logout confirmation dialog
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
 
   const handleLogout = () => {
-     logout()
-     navigate("/login")
-   }
-  
-  // Mock functions for CRUD operations 
-  const handleAddPost = async (newPost: any) => {
-    //Simulate adding a post
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    setShowLogoutConfirm(true) // Show confirmation dialog instead of logging out immediately
+  }
 
-    toast.success('Post added successfully!')
+  const confirmLogout = () => {
+    logout()
+    navigate("/login")
+    setShowLogoutConfirm(false)
+  }
+
+  const cancelLogout = () => {
+    setShowLogoutConfirm(false)
   }
 
   const {
@@ -48,7 +49,6 @@ export default function Feed() {
   } = useInfinitePosts()
 
   // Memoize the onIntersect callback to prevent unnecessary re-renders
-  //function calls are stored (cached) to avoid redundant calculations when the same inputs occur again
   const handleIntersect = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage()
@@ -66,28 +66,17 @@ export default function Feed() {
   const allPosts = data?.pages.flat() || []
   const totalPosts = allPosts.length
 
-  // Handle view comments
-  const handleViewComments = useCallback((postId: number) => {
-    setSelectedPostId(postId)
-    // console.log(`📝 Viewing comments for post ${postId}`)
-    //  navigation
-  }, [])
-
   // Loading state
   if (isLoading) {
     return (
-      <div className="max-w-7xl mx-auto px-2 -mt-2 relative z-10">
+      <div className="max-w-7xl mx-auto ">
         {/* Top Bar */}
-        <div className="flex justify-end mb-4 gap-2 relative z-50 pr-4">
-          <Button variant="outline" size="sm" onClick={() => navigate('/posts')}>
+        <div className="flex justify-end items-center gap-2 mb-4">
+          <Button variant="outline" size="sm" onClick={() => navigate('/posts')} className="h-9 px-4">
             Read Posts
           </Button>
         </div>
         <div className="text-center mb-6 sm:mb-8">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Rss className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
-            <h1 className="text-3xl sm:text-4xl font-bold text-foreground">Social Feed</h1>
-          </div>
           <p className="text-muted-foreground text-sm sm:text-base">Loading your personalized feed...</p>
         </div>
   
@@ -114,7 +103,7 @@ export default function Feed() {
         </Alert>
         
         <div className="text-center">
-          <Button onClick={() => refetch()} disabled={isRefetching}>
+          <Button onClick={() => refetch()} disabled={isRefetching} className="h-10 px-6">
             <RefreshCw className={`w-4 h-4 mr-2 ${isRefetching ? 'animate-spin' : ''}`} />
             {isRefetching ? 'Retrying...' : 'Try Again'}
           </Button>
@@ -124,77 +113,114 @@ export default function Feed() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-2 sm:px-4 -mt-2 relative z-10">
-    {/* Top Bar - Email and Buttons aligned */}
-<div className="flex justify-end items-end mt-0 mb-2 pt-2">
-  <div className="flex flex-col items-end gap-2">
-    <span className="text-sm sm:text-base font-medium text-gray-700 select-all">
-      {user?.email || 'No email'}
-    </span>
-    <div className="flex flex-col gap-2">
-      <Button
-        size="sm"
-        className="bg-black text-white hover:bg-gray-900 focus:ring-2 focus:ring-black px-4 py-2 rounded-md font-semibold shadow transition-all duration-200 cursor-pointer"
-        onClick={handleLogout}
-      >
-        Logout <LogOut className="w-4 h-4 ml-1" />
-      </Button>
-      <Link to="/posts/new">
-        <Button size="sm" className="bg-black text-white hover:bg-gray-900 focus:ring-2 focus:ring-black px-4 py-2 rounded-md font-semibold shadow transition-all duration-200 cursor-pointer">
-          <PlusCircle className="w-4 h-4 mr-2" /> Add New Post
-        </Button>
-      </Link>
-    </div>
-  </div>
-</div>
-      {/* Header */}
-      <div className="text-center mt-0 mb-4">
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-500 to-pink-500 drop-shadow-2xl underline underline-offset-8 decoration-8 decoration-pink-400 tracking-tight pb-2">
-          Feed
-        </h1>
-      </div>
-      {/* Posts Flexbox Layout */}
-      {totalPosts > 0 ? (
-        <>
-          <div className="flex flex-wrap gap-6 justify-center">
-            {allPosts.map((post, index) => (
-              <div key={`${post.id}-${index}`} className="flex-1 min-w-[280px] max-w-[350px]">
-                <PostCard 
-                  post={post} 
-                  onViewComments={handleViewComments}
-                />
-              </div>
-            ))}
-          </div>
-
-          {/* Intersection Observer Target */}
-          <div ref={intersectionRef} className="h-4" />
-
-          {/* Loading More Indicator */}
-          {isFetchingNextPage && (
-            <LoadingSpinner 
-              text="Loading more posts..." 
-              className="py-8"
-            />
-          )}
-
-          {/* End of Feed Message */}
-          {!hasNextPage && (
-            <div className="text-center py-12 border-t">
-              <div className="max-w-md mx-auto">
-               <p>You've reached the end of the feed!</p>             </div>
+    <>
+      <div className="max-w-7xl mx-auto ">
+        {/* Top Bar - Compact layout with proper button sizing */}
+        <div className="flex justify-between items-center">
+          <div className="flex-1" />
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium text-gray-700">
+              {user?.email || 'No email'}
+            </span>
+            <div className="flex items-center gap-2">
+              <Button
+                size="sm"
+                className="h-9 px-4 bg-black text-white hover:bg-gray-900 focus:ring-2 focus:ring-black font-medium"
+                onClick={handleLogout}
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Logout
+              </Button>
+              {/* <Link to="/posts/new">
+                <Button 
+                  size="sm" 
+                  className="h-9 px-4 bg-black text-white hover:bg-gray-900 focus:ring-2 focus:ring-black font-medium"
+                >
+                  <PlusCircle className="w-4 h-4 mr-2" />
+                  Add New Post
+                </Button>
+              </Link> */}
             </div>
-          )}
-        </>
-      ) : (
-        <div className="text-center py-16">
-          <Rss className="w-16 h-16 text-muted-foreground/50 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold mb-2">No posts found</h3>
-          <p className="text-muted-foreground">
-            There are no posts to display right now.
-          </p>
+          </div>
+        </div>
+
+        {/* Header - Reduced top margin */}
+        <div className="text-center mb-4">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-blue-900 drop-shadow-2xl underline underline-offset-8 decoration-8 tracking-tight">
+            Feed
+          </h1>
+        </div>
+
+        {/* Posts Flexbox Layout */}
+        {totalPosts > 0 ? (
+          <>
+            <div className="flex flex-wrap gap-6 justify-center">
+              {allPosts.map((post, index) => (
+                <div key={`${post.id}-${index}`} className="flex-1 min-w-[280px] max-w-[350px]">
+                  <PostCard 
+                    post={post} 
+                    
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Intersection Observer Target */}
+            <div ref={intersectionRef} className="h-4" />
+
+            {/* Loading More Indicator */}
+            {isFetchingNextPage && (
+              <LoadingSpinner 
+                text="Loading more posts..." 
+                className="py-8"
+              />
+            )}
+
+            {/* End of Feed Message */}
+            {!hasNextPage && (
+              <div className="text-center py-12 border-t">
+                <div className="max-w-md mx-auto">
+                 <p>You've reached the end of the feed!</p>             
+                </div>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="text-center py-16">
+            <Rss className="w-16 h-16 text-muted-foreground/50 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold mb-2">No posts found</h3>
+            <p className="text-muted-foreground">
+              There are no posts to display right now.
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Logout Confirmation Dialog */}
+      {showLogoutConfirm && (
+        <div className="logout-dialog-overlay">
+          <div className="logout-dialog-content">
+            <h2 className="logout-dialog-title">Logout</h2>
+            <p className="logout-dialog-description">
+              Are you sure you want to logout? You will be redirected to the login page.
+            </p>
+            <div className="logout-dialog-actions">
+              <button 
+                className="logout-dialog-cancel"
+                onClick={cancelLogout}
+              >
+                Cancel
+              </button>
+              <button 
+                className="logout-dialog-confirm"
+                onClick={confirmLogout}
+              >
+                Logout
+              </button>
+            </div>
+          </div>
         </div>
       )}
-    </div>
+    </>
   )
 }

@@ -14,7 +14,7 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-green-300 via-green-500 to-green-900 flex items-center justify-center p-4">
+    <div className="min-h-screen w-full bg-gradient-to-br from-blue-300 via-blue-500 to-blue-900 flex items-center justify-center p-4">
       <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg">
         <div className="space-y-6 p-6 sm:p-8 rounded-xl shadow-2xl bg-white/95 backdrop-blur-sm border border-white/20 text-center">
           <div>
@@ -28,7 +28,7 @@ export default function Signup() {
 
           <Button 
             onClick={handleSubmit}
-            className="w-full bg-green-600 hover:bg-green-700 text-white py-2.5 text-base font-medium transition-colors duration-200"
+            className="w- bg-blue-600 hover:bg-blue-700 text-white py-2.5 text-base font-medium transition-colors duration-200"
           >
             Create Account
           </Button>
@@ -38,7 +38,7 @@ export default function Signup() {
               Already have an account?{" "}
               <Link 
                 to="/login"
-                className="text-green-600 hover:text-green-700 font-medium hover:underline"
+                className="text-blue-600 hover:text-blue-700 font-medium hover:underline"
               >
                 Sign in
               </Link>

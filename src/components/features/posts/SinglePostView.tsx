@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '../../ui/sheet';
 import EditPostForm from './EditPostForm';
 import { toast } from 'sonner';
-import LoadingSpinner from './LoadingSpinner';
+// import LoadingSpinner from './LoadingSpinner';
 
 const SinglePostView = () => {
   const { postId } = useParams<{ postId: string }>();
@@ -88,13 +88,13 @@ const SinglePostView = () => {
     return <div className="text-center py-8">Post not found.</div>;
   }
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center py-8">
-        <LoadingSpinner text="Loading post..." />
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="flex justify-center py-8">
+  //       <LoadingSpinner text="Loading post..." />
+  //     </div>
+  //   );
+  // }
 
   if (isError) {
     return <div className="text-center py-8 text-red-500">Error: {error?.message}</div>;
