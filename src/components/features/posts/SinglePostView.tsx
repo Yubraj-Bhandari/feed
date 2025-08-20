@@ -24,7 +24,7 @@ const SinglePostView = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const { data: post, isLoading, isError, error } = useQuery<Post>({
+  const { data: post, isError, error } = useQuery<Post>({
     queryKey: ['post', id],
     queryFn: async () => {
       // console.log('SinglePostView: Fetching post with URL:', `/posts/${id}`);

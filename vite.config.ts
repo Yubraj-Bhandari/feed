@@ -5,7 +5,8 @@ import { defineConfig } from "vite"
 
 
 export default defineConfig({
-  base: "/",
+  // base: "/feed/",
+   base: process.env.NODE_ENV === 'production' ? '/feed/' : '/',
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {

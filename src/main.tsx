@@ -29,7 +29,8 @@ const queryClient = new QueryClient({
 })
 
 // Set basename dynamically for local dev and production
-const basename = import.meta.env.DEV ? "/" : "/feed"
+
+const basename = import.meta.env.PROD ? "/feed" : "/"
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
