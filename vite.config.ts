@@ -14,6 +14,6 @@ export default defineConfig({
     },
   },
   server: {
-    // Add other supported Vite server options here if needed
+    
   },
 })
